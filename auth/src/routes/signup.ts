@@ -20,7 +20,9 @@ router.post('/api/users/singup', [
 
     const { email, password } = req.body;
 
-    const hasExistingUser = await User.findOne({email, password});
+    const hasExistingUser = await User.findOne({email});
+
+    console.log({hasExistingUser})
 
     if (hasExistingUser) {
         throw new BadRequestError('Email is in use')
@@ -39,7 +41,7 @@ router.post('/api/users/singup', [
         jwt: userJwt,
     };
 
-    res.send('Hi there! Finally!!!!!!!');
+    res.send({user});
 })
 
 export { router as SignUpRouter };
