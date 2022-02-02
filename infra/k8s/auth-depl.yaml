@@ -16,7 +16,15 @@ spec:
       containers:
         - name: auth
           image: mike/auth
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
 
+# kubectl create secret generic jwt-secret --from-literal=JWT_KEY=asd
+# kubectl config set-context --current --namespace=my-namespace
 ---
 apiVersion: v1
 kind: Service

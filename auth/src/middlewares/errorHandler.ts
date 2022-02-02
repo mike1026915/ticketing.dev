@@ -4,8 +4,10 @@ import { CustomError } from '../errors/CustomError';
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof CustomError) {
-        return res.status(err.statusCode).send(err.serializeError())
+        return res.status(err.statusCode).send({ errors: err.serializeError() })
     }
+
+    console.log(err)
 
     return res.status(400).send({
         errors: [{

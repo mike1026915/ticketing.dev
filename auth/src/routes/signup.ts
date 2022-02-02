@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
 import { BadRequestError } from '../errors/BadRequest';
+import { RequestValidationError } from '../errors/RequestValidationError';
 import { User } from '../models/user';
 
 const router = express.Router();
@@ -14,7 +15,7 @@ router.post('/api/users/singup', [
     const errors = validationResult(req);
 
     if(!errors.isEmpty()) {
-        throw new Error();
+        throw new RequestValidationError(errors.array());
     }
 
     const { email, password } = req.body;
@@ -31,7 +32,7 @@ router.post('/api/users/singup', [
     const userJwt = jwt.sign({
         id: user.id,
         email: user.email,
-    }, 'qqqqq')
+    }, process.env.JWT_KEY!)
 
     req.session = {
         ...req.session,
