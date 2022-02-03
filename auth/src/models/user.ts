@@ -30,6 +30,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     }
+}, {
+    toJSON: {
+        transform(doc, ret) {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.password;
+            delete ret.__v;
+        }
+    }
 })
 
 userSchema.pre('save', async function(done) { // middleware using function keyword to define function to get the handling context instead of current context
